@@ -2,7 +2,7 @@
 <package format="2">
   <name>group_project</name>
   <version>0.0.0</version>
-  <description>The group_project package</description>
+  <description>The A_Distributed_Architecture_for_ADL_Recognition package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -50,6 +50,7 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
 
+  <build_depend>message_generation</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>rospy</build_depend>
   <build_depend>std_msgs</build_depend>
