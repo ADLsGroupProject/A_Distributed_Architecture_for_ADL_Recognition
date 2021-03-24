@@ -22,19 +22,19 @@ sample = ImuSample()
 def luaAdapter():
     rate = rospy.Rate(33.33)
 
-    while not rospy.is_shutdown():
-        for row in imuData:
-            sample.label = row[0]
-            sample.timestamp = int(row[1])
-            sample.quaternions = [float(row[2]), float(row[3]), float(row[4]), float(row[5])]
-            sample.accelerations = [float(row[6]), float(row[7]), float(row[8])]
-            sample.angular_velocities = [float(row[9]), float(row[10]), float(row[11])]
+    for row in imuData:
+        if rospy.is_shutdown():
+            break
 
-            samplePub.publish(sample)
+        sample.label = row[0]
+        sample.timestamp = int(row[1])
+        sample.quaternions = [float(row[2]), float(row[3]), float(row[4]), float(row[5])]
+        sample.accelerations = [float(row[6]), float(row[7]), float(row[8])]
+        sample.angular_velocities = [float(row[9]), float(row[10]), float(row[11])]
 
-            rate.sleep()
+        samplePub.publish(sample)
 
-        break
+        rate.sleep()
 
 
 if __name__ == "__main__":
@@ -44,7 +44,7 @@ if __name__ == "__main__":
         script_path = os.path.abspath(__file__) 
         path_list = script_path.split(os.sep)
         script_directory = path_list[0:len(path_list)-2]
-        csv_path = rospy.get_param("lua_csv_path")
+        csv_path = rospy.get_param("/lua_csv_path")
         path = "/".join(script_directory) + "/" + csv_path
         csvFile = open(path, 'r')
         imuData = csv.reader(csvFile)

@@ -5,7 +5,7 @@
 # @author Davide Piccinini <piccio98dp\@gmail.com>
 # @date 23 March 2021
 # @brief This file contains the template used to simulate an IMU 
-#        sending data on a topic.
+# sending data on a topic.
 
 
 import rospy
@@ -34,21 +34,22 @@ def adapter():
     # Publish a sample every 30 ms
     rate = rospy.Rate(33.33)
 
-    while not rospy.is_shutdown():
-        for row in imuData:
-            # Convert the data to their correct type
-            sample.label = row[0]
-            sample.timestamp = int(row[1])
-            sample.quaternions = [float(row[2]), float(row[3]), float(row[4]), float(row[5])]
-            sample.accelerations = [float(row[6]), float(row[7]), float(row[8])]
-            sample.angular_velocities = [float(row[9]), float(row[10]), float(row[11])]
+    for row in imuData:
+        # If ROS is shut down, stop sending data
+        if rospy.is_shutdown():
+            break
 
-            # Publish the sample on the topic
-            samplePub.publish(sample)
+        # Convert the data to their correct type
+        sample.label = row[0]
+        sample.timestamp = int(row[1])
+        sample.quaternions = [float(row[2]), float(row[3]), float(row[4]), float(row[5])]
+        sample.accelerations = [float(row[6]), float(row[7]), float(row[8])]
+        sample.angular_velocities = [float(row[9]), float(row[10]), float(row[11])]
 
-            rate.sleep()
+        # Publish the sample on the topic
+        samplePub.publish(sample)
 
-        break
+        rate.sleep()
 
 
 ##
