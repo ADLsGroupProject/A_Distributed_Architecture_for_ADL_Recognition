@@ -161,6 +161,12 @@ include_directories(
 ## in contrast to setup.py, you can choose the destination
 install(PROGRAMS
   scripts/adapter_template.py
+  scripts/back_IMU_adapter.py
+  scripts/lla_IMU_adapter.py
+  scripts/lua_IMU_adapter.py
+  scripts/rla_IMU_adapter.py
+  scripts/rt_IMU_adapter.py
+  scripts/rua_IMU_adapter.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
