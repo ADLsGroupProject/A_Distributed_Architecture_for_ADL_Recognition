@@ -11,6 +11,7 @@
 import rospy
 import os
 import threading
+import csv
 from datetime import datetime
 from statistics import mode
 from std_msgs.msg import String
@@ -57,11 +58,9 @@ sysClass = SystemClassification()
 
 
 ##
-# @brief 
+# @brief Callback function for the @c sensor/back_IMU_label topic.
+# @param label The label sent by the back sensor module. 
 def backCallback(label):
-    global labels
-    global backReceived
-
     if not backReceived.is_set():
         # Save the label
         labels.append(label.data)
@@ -71,11 +70,9 @@ def backCallback(label):
 
 
 ##
-# @brief 
+# @brief Callback function for the @c sensor/lla_IMU_label topic.
+# @param label The label sent by the left lower arm sensor module. 
 def llaCallback(label):
-    global labels
-    global llaReceived
-
     if not llaReceived.is_set():
         # Save the label
         labels.append(label.data)
@@ -85,11 +82,9 @@ def llaCallback(label):
 
 
 ##
-# @brief 
+# @brief Callback function for the @c sensor/lua_IMU_label topic.
+# @param label The label sent by the left upper arm sensor module. 
 def luaCallback(label):
-    global labels
-    global luaReceived
-
     if not luaReceived.is_set():
         # Save the label
         labels.append(label.data)
@@ -99,11 +94,9 @@ def luaCallback(label):
 
 
 ##
-# @brief 
+# @brief Callback function for the @c sensor/rla_IMU_label topic.
+# @param label The label sent by the right lower arm sensor module. 
 def rlaCallback(label):
-    global labels
-    global rlaReceived
-
     if not rlaReceived.is_set():
         # Save the label
         labels.append(label.data)
@@ -113,11 +106,9 @@ def rlaCallback(label):
 
 
 ##
-# @brief 
+# @brief Callback function for the @c sensor/rt_IMU_label topic.
+# @param label The label sent by the right thigh sensor module. 
 def rtCallback(label):
-    global labels
-    global rtReceived
-
     if not rtReceived.is_set():
         # Save the label
         labels.append(label.data)
@@ -127,11 +118,9 @@ def rtCallback(label):
 
 
 ##
-# @brief 
+# @brief Callback function for the @c sensor/rua_IMU_label topic.
+# @param label The label sent by the right upper arm sensor module. 
 def ruaCallback(label):
-    global labels
-    global ruaReceived
-
     if not ruaReceived.is_set():
         # Save the label
         labels.append(label.data)
@@ -141,13 +130,28 @@ def ruaCallback(label):
 
 
 ##
-# @brief 
-def classify():
-    # global labels
-    # global sysClass
-    # global classificationPub
-    # global backReceived, llaReceived, luaReceived, rlaReceived, rtReceived, ruaReceived
+# @brief Write the output on the csv file if the user specified it in 
+# the launch file.
+# @param starting_timestamp The starting timestamp (ms since midnight) 
+# of the sliding window.
+# @param ending_timestamp The ending timestamp (ms since midnight) 
+# of the sliding window. 
+# @param classification The label representing the final output of the
+# system. 
+def writeOnCsv(starting_timestamp, ending_timestamp, classification):
+    if writeOutput:
+        outputCsv.writerow([str(starting_timestamp), str(ending_timestamp), classification])
 
+
+##
+# @brief This function outputs the system's classification both on the
+# @c system_classification topic and on a user-defined csv file.
+#
+# Wait for all the sensor modules to publish their label and then 
+# create the message, sent it on the topic and write it on the csv file.
+# The function also computes the starting and ending timestamps of all
+# sliding windows (approximately).
+def classify():
     # Get the starting timestamp of the first sliding window
     now = datetime.now()
     midnight = now.replace(hour=0, minute=0, second=0, microsecond=0)
@@ -172,6 +176,10 @@ def classify():
 
         # Publish the message
         classificationPub.publish(sysClass)
+
+        # Write the message on the csv file
+        thread = threading.Thread(target=writeOnCsv, args=(starting_timestamp, ending_timestamp, sysClass.classification, ))
+        thread.start()
 
         # Compute the next starting_timestamp (timedelta should be more or less constant)
         timedelta = ending_timestamp - starting_timestamp
@@ -209,8 +217,19 @@ if __name__ == "__main__":
         rtSub = rospy.Subscriber("sensor/rt_IMU_label", String, rtCallback)
         ruaSub = rospy.Subscriber("sensor/rua_IMU_label", String, ruaCallback)
 
+        # Open the csv file for writing if the user specified so
+        writeOutput = rospy.get_param("write_on_csv")
+        if writeOutput:
+            script_path = os.path.abspath(__file__) 
+            path_list = script_path.split(os.sep)
+            script_directory = path_list[0:len(path_list)-2]
+            csv_path = rospy.get_param("output_csv_path")
+            path = "/".join(script_directory) + "/" + csv_path
+            csvFile = open(path, 'w')
+            outputCsv = csv.writer(csvFile, delimiter=',', quotechar='"')
+
         # Get the sliding window overlap parameter
-        overlap = float(rospy.get_param("/sliding_window_overlap"))
+        overlap = rospy.get_param("/sliding_window_overlap")
 
         # Start classifying the sliding windows
         classify()
