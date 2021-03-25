@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <!-- Parameterss defining the paths of the csv files to read -->
+  <param name="back_csv_path" value="/data/volunteer_01/IMUs/back.csv"/>
+  <param name="lla_csv_path" value="/data/volunteer_01/IMUs/lla.csv"/>
+  <param name="lua_csv_path" value="/data/volunteer_01/IMUs/lua.csv"/>
+  <param name="rla_csv_path" value="/data/volunteer_01/IMUs/rla.csv"/>
+  <param name="rt_csv_path" value="/data/volunteer_01/IMUs/rt.csv"/>
+  <param name="rua_csv_path" value="/data/volunteer_01/IMUs/rua.csv"/>
+
+  <!-- Parameter defining the sliding window overlap -->
+  <param name="sliding_window_overlap" value="0.5"/>
+  
+
+  <!-- Include other launch files -->
+  <include file="$(find group_project)/launch/adapters.launch"></include>
+  <include file="$(find group_project)/launch/final_classificator.launch"></include>
+
+</launch>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <!-- Run the final classificator -->
+  <node name="final_classificator" pkg="group_project" type="final_classificator.py" output="screen"/>
+
+</launch>

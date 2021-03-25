@@ -1,0 +1,3 @@
+int64 starting_timestamp
+int64 ending_timestamp
+string classification

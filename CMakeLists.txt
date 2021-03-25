@@ -51,6 +51,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   ImuSample.msg
+  SystemClassification.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -167,6 +168,7 @@ install(PROGRAMS
   scripts/rla_IMU_adapter.py
   scripts/rt_IMU_adapter.py
   scripts/rua_IMU_adapter.py
+  scripts/final_classificator.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

@@ -2,14 +2,6 @@
 
 <launch>
 
-  <!-- Params defining the paths of the csv files to read -->
-  <param name="back_csv_path" value="/data/volunteer_01/IMUs/back.csv"/>
-  <param name="lla_csv_path" value="/data/volunteer_01/IMUs/lla.csv"/>
-  <param name="lua_csv_path" value="/data/volunteer_01/IMUs/lua.csv"/>
-  <param name="rla_csv_path" value="/data/volunteer_01/IMUs/rla.csv"/>
-  <param name="rt_csv_path" value="/data/volunteer_01/IMUs/rt.csv"/>
-  <param name="rua_csv_path" value="/data/volunteer_01/IMUs/rua.csv"/>
-
   <!-- Run the adapters -->
   <group ns="adapter">
     <node name="back_IMU_adapter" pkg="group_project" type="back_IMU_adapter.py" output="screen"/>
