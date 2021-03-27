@@ -144,13 +144,17 @@ def writeOnCsv(starting_timestamp, ending_timestamp, classification):
 
 
 ##
-# @brief This function outputs the system's classification both on the
-# @c system_classification topic and on a user-defined csv file.
+# @brief Output the system's classification on the @c system_classification
+# topic and eventually on a user-defined csv file.
 #
-# Wait for all the sensor modules to publish their label and then 
-# create the message, sent it on the topic and write it on the csv file.
+# Wait for all the sensor modules to publish their label, then 
+# create the message, sent it on the topic and start the thread to write
+# it on the csv file.
 # The function also computes the starting and ending timestamps of all
 # sliding windows (approximately).
+#
+# @note We assume that the first sliding window's starting timestamp
+# coincides with when the system is started.
 def classify():
     # Get the starting timestamp of the first sliding window
     now = datetime.now()
@@ -199,8 +203,6 @@ def classify():
         rospy.spin()
 
 
-##
-# @brief Program initialization.
 if __name__ == "__main__":
     try:
         # Initialize the node

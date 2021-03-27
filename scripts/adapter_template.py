@@ -52,8 +52,6 @@ def adapter():
         rate.sleep()
 
 
-##
-# @brief Program initialization.
 if __name__ == "__main__":
     try:
         # Initialize the node
