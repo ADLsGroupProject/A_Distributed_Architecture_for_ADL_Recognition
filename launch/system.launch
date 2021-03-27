@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <!-- Adapters parameters -->
+    <!-- Define the paths of the csv files to read -->
+    <param name="back_csv_path" value="/data/volunteer_01/IMUs/back.csv"/>
+    <param name="lla_csv_path" value="/data/volunteer_01/IMUs/lla.csv"/>
+    <param name="lua_csv_path" value="/data/volunteer_01/IMUs/lua.csv"/>
+    <param name="rla_csv_path" value="/data/volunteer_01/IMUs/rla.csv"/>
+    <param name="rt_csv_path" value="/data/volunteer_01/IMUs/rt.csv"/>
+    <param name="rua_csv_path" value="/data/volunteer_01/IMUs/rua.csv"/>
+
+
+  <!-- Final classificator parameters -->
+    <!-- Define the sliding window overlap -->
+    <param name="sliding_window_overlap" value="0.5"/>
+
+    <!-- Define if you want to write the system's output on a csv file -->
+    <param name="write_on_csv" value="True"/>
+
+    <!-- Define the csv file path -->
+    <param name="output_csv_path" value="output/classification.csv"/>
+
+
+  <!-- Include other launch files -->
+  <include file="$(find group_project)/launch/adapters.launch"></include>
+  <include file="$(find group_project)/launch/final_classificator.launch"></include>
+
+</launch>
