@@ -34,6 +34,8 @@ def adapter():
     # Publish a sample every 30 ms
     rate = rospy.Rate(33.33)
 
+    print("General adapter: Running...")
+
     for row in imuData:
         # If ROS is shut down, stop sending data
         if rospy.is_shutdown():

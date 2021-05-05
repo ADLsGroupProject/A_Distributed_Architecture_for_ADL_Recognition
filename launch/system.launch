@@ -13,11 +13,11 @@
 
 
   <!-- Final classificator parameters -->
-    <!-- Define the sliding window overlap -->
-    <param name="sliding_window_overlap" value="0.5"/>
+    <!-- Define the tolerance (in ms) allowed when testing the coherence of the timestamps -->
+    <param name="tolerance_in_ms" value="100"/>
 
     <!-- Define if you want to write the system's output on a csv file -->
-    <param name="write_on_csv" value="True"/>
+    <param name="write_on_csv" value="True" type="bool"/>
 
     <!-- Define the csv file path -->
     <param name="output_csv_path" value="output/classification.csv"/>

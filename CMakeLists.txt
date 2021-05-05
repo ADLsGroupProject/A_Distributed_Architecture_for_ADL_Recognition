@@ -51,7 +51,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   ImuSample.msg
-  SystemClassification.msg
+  Classification.msg
 )
 
 ## Generate services in the 'srv' folder

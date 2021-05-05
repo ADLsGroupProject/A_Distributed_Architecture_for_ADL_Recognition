@@ -1,3 +1,4 @@
 int64 starting_timestamp
 int64 ending_timestamp
-string classification
+string label
+float64 confidence_coefficient

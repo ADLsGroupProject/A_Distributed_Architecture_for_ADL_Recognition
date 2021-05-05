@@ -22,6 +22,8 @@ sample = ImuSample()
 def backAdapter():
     rate = rospy.Rate(33.33)
 
+    print("Back IMU adapter: Running...")
+
     for row in imuData:
         if rospy.is_shutdown():
             break

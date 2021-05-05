@@ -22,6 +22,8 @@ sample = ImuSample()
 def ruaAdapter():
     rate = rospy.Rate(33.33)
 
+    print("Right upper arm IMU adapter: Running...")
+
     for row in imuData:
         if rospy.is_shutdown():
             break
