@@ -56,8 +56,8 @@ startingTimestamps = []
 ## Ending timestamps list
 endingTimestamps = []
 
-## Confidence coefficients list
-confCoeff = []
+## Sensor modules' confidence coefficients list
+confCoeffs = []
 
 ## System classification message definition
 sysClass = Classification()
@@ -78,7 +78,7 @@ def backCallback(message):
         labels.append(message.label)
 
         # Save the confidence coefficient
-        confCoeff.append(message.confidence_coefficient)
+        confCoeffs.append(message.confidence_coefficient)
 
         # Set the flag to true
         backReceived.set()
@@ -99,7 +99,7 @@ def llaCallback(message):
         labels.append(message.label)
 
         # Save the confidence coefficient
-        confCoeff.append(message.confidence_coefficient)
+        confCoeffs.append(message.confidence_coefficient)
         
         # Set the flag to true
         llaReceived.set()
@@ -120,7 +120,7 @@ def luaCallback(message):
         labels.append(message.label)
 
         # Save the confidence coefficient
-        confCoeff.append(message.confidence_coefficient)
+        confCoeffs.append(message.confidence_coefficient)
         
         # Set the flag to true
         luaReceived.set()
@@ -141,7 +141,7 @@ def rlaCallback(message):
         labels.append(message.label)
 
         # Save the confidence coefficient
-        confCoeff.append(message.confidence_coefficient)
+        confCoeffs.append(message.confidence_coefficient)
         
         # Set the flag to true
         rlaReceived.set()
@@ -162,7 +162,7 @@ def rtCallback(message):
         labels.append(message.label)
 
         # Save the confidence coefficient
-        confCoeff.append(message.confidence_coefficient)
+        confCoeffs.append(message.confidence_coefficient)
         
         # Set the flag to true
         rtReceived.set()
@@ -183,7 +183,7 @@ def ruaCallback(message):
         labels.append(message.label)
 
         # Save the confidence coefficient
-        confCoeff.append(message.confidence_coefficient)
+        confCoeffs.append(message.confidence_coefficient)
         
         # Set the flag to true
         ruaReceived.set()
@@ -242,11 +242,24 @@ def classify():
         # If both lists of timestamps are coherent, compute and send 
         # the output message
         if startCoherence and endCoherence:
+            # Find the most occurring label
+            finalLabel = mode(labels)
+
+            # Compute the confidence coefficient of the system's classification
+            # Get the indexes corresponding to the most occurring label
+            indexes = [i for i,x in enumerate(labels) if x == finalLabel]
+            # Make a list containing only the relevant sensor modules' coefficients
+            finalCoeffs = []
+            for v in indexes:
+                finalCoeffs.append(confCoeffs[v])
+            # Finally append the final classificator's confidence coefficient 
+            finalCoeffs.append(len(indexes) / 6)
+
             # Create the message
             sysClass.starting_timestamp = min(startingTimestamps)
             sysClass.ending_timestamp = max(endingTimestamps)
-            sysClass.label = mode(labels)
-            sysClass.confidence_coefficient = round(mean(confCoeff), 3)
+            sysClass.label = finalLabel
+            sysClass.confidence_coefficient = round(mean(finalCoeffs), 3)
 
             # Publish the message
             classificationPub.publish(sysClass)
@@ -261,7 +274,7 @@ def classify():
         startingTimestamps.clear()
         endingTimestamps.clear()
         labels.clear()
-        confCoeff.clear()
+        confCoeffs.clear()
 
         # Set all the flags back to false
         backReceived.clear()
