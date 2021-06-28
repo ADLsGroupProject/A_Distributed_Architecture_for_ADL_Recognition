@@ -294,12 +294,12 @@ if __name__ == "__main__":
         classificationPub = rospy.Publisher("system_classification", Classification, queue_size=1)
 
         # Initialize the subscribers
-        backSub = rospy.Subscriber("sensor/back_IMU_classification", Classification, backCallback)
-        llaSub = rospy.Subscriber("sensor/lla_IMU_classification", Classification, llaCallback)
-        luaSub = rospy.Subscriber("sensor/lua_IMU_classification", Classification, luaCallback)
-        rlaSub = rospy.Subscriber("sensor/rla_IMU_classification", Classification, rlaCallback)
-        rtSub = rospy.Subscriber("sensor/rt_IMU_classification", Classification, rtCallback)
-        ruaSub = rospy.Subscriber("sensor/rua_IMU_classification", Classification, ruaCallback)
+        backSub = rospy.Subscriber("classificator/back_IMU_classification", Classification, backCallback)
+        llaSub = rospy.Subscriber("classificator/lla_IMU_classification", Classification, llaCallback)
+        luaSub = rospy.Subscriber("classificator/lua_IMU_classification", Classification, luaCallback)
+        rlaSub = rospy.Subscriber("classificator/rla_IMU_classification", Classification, rlaCallback)
+        rtSub = rospy.Subscriber("classificator/rt_IMU_classification", Classification, rtCallback)
+        ruaSub = rospy.Subscriber("classificator/rua_IMU_classification", Classification, ruaCallback)
 
         # Open the csv file for writing if the user specified so
         writeOutput = rospy.get_param("write_on_csv")

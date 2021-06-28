@@ -1,0 +1,16 @@
+In "Adapters_Send_Data_On_Topics.mp4" I:
+- show the parameters used to run the system
+- show that roscore is already running
+- start the system
+- list the available topics
+- echo one by one each adapter topic to see that they're in fact receiving data
+
+In "Final_Classificator_Writes_Output.mp4" I:
+- show the parameters used to run the system
+- open the output csv file to see that it's empty
+- show that roscore is already running
+- start the system
+- list the available topics
+- echo the "system_classification" topic, which is where the final classificator will send its output
+- send a message on each classificator topic
+- show that the final classificator wrote the output on the topic and on the csv file
